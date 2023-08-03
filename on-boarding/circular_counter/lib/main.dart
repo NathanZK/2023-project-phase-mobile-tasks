@@ -26,27 +26,28 @@ class _CounterState extends State<Counter> {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '$_counter',
-              style: const TextStyle(fontSize: 50),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                ElevatedButton(
-                  onPressed: _increment,
-                  child: const Text('Increment'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: _decrement,
-                  child: const Text("Decrement"),
-                ),
-              ],
-            )
-          ]),
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            '$_counter',
+            style: const TextStyle(fontSize: 50),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: _increment,
+                child: const Text('Increment'),
+              ),
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: _decrement,
+                child: const Text("Decrement"),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
