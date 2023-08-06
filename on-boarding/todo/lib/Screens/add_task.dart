@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../app_bar.dart';
+
 class AddTask extends StatelessWidget {
   const AddTask({super.key});
 
@@ -7,40 +9,8 @@ class AddTask extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          toolbarHeight: 110,
-          title: const Padding(
-            padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
-            child: Center(
-              child: Text(
-                'Create new task',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 25,
-                ),
-              ),
-            ),
-          ),
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Color(0xFFEE6F57),
-            ),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_vert,
-                size: 40.0,
-              ),
-              color: Colors.black,
-            )
-          ],
+        appBar: const CommonAppBar(
+          title: 'Create new task',
         ),
         body: Column(
           children: [

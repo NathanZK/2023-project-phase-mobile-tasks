@@ -10,7 +10,6 @@ class GetStarted extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Text("hey"),
           const Image(
             width: 390,
             height: 390,

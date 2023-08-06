@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/Screens/task_detail.dart';
 
 import 'Screens/add_task.dart';
 import 'Screens/getting_started.dart';
@@ -15,7 +16,8 @@ class TodoApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       // home: GetStarted(),
-      home: AddTask(),
+      // home: AddTask(),
+      home: TaskDetail(),
     );
   }
 }
