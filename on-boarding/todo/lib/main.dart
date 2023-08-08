@@ -14,12 +14,15 @@ class TodoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: GetStarted(),
-      // home: AddTask(),
-      // home: TaskDetail(),
-      home: TodoList(),
+      initialRoute: "/",
+      routes: {
+        '/': (context) => const GetStarted(),
+        '/todoList': (context) => TodoList(),
+        '/addTask': (context) => AddTask(),
+        '/taskDetail': (context) => const TaskDetail(),
+      },
     );
   }
 }

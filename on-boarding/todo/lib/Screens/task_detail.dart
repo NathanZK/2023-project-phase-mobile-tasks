@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../app_bar.dart';
@@ -8,15 +7,22 @@ class TaskDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    final Map<String, dynamic> args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    final String taskName = args['taskName'];
+    final String duedate = args['duedate'];
+    final String description = args['description'];
+
+    return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CommonAppBar(
+      appBar: const CommonAppBar(
         title: 'Task Detail',
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
+          const Center(
             child: Image(
               width: 220,
               height: 220,
@@ -26,18 +32,14 @@ class TaskDetail extends StatelessWidget {
           CustomField(
             minLine: 1,
             fieldTitle: "Title",
-            fieldText: "UI/UX App Design",
+            fieldText: taskName,
           ),
           CustomField(
-            minLine: 4,
-            fieldTitle: "Description",
-            fieldText:
-                "First I have to animate the logo and prototyping my design. It’s very important.",
-          ),
+              minLine: 4, fieldTitle: "Description", fieldText: description),
           CustomField(
             minLine: 1,
             fieldTitle: "Deadline",
-            fieldText: "April. 29, 2023",
+            fieldText: duedate,
           ),
         ],
       ),

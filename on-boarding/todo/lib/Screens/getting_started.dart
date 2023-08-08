@@ -23,7 +23,9 @@ class GetStarted extends StatelessWidget {
               width: 256,
               height: 50,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/todoList');
+                },
                 child: const Text(
                   "Get Started",
                   style: TextStyle(
