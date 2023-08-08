@@ -34,12 +34,13 @@ class TodoList extends StatelessWidget {
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
     if (args != null) {
-      tasks.add(Task(
+      Task newtask = Task(
         taskName: args['taskName'],
         date: args['date'],
         col: args['col'],
         description: args['description'],
-      ));
+      );
+      tasks.add(newtask);
     }
 
     return Scaffold(
@@ -47,68 +48,71 @@ class TodoList extends StatelessWidget {
       appBar: const CommonAppBar(
         title: 'Todo List',
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Center(
-            child: Image(
-              width: 220,
-              height: 220,
-              image: AssetImage('assets/images/stickman-with-todo-list.png'),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(40, 5, 0, 0),
-            child: Text(
-              "Tasks List",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Center(
+              child: Image(
+                width: 220,
+                height: 220,
+                image: AssetImage('assets/images/stickman-with-todo-list.png'),
               ),
             ),
-          ),
-          const SizedBox(height: 5),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: tasks.length,
-            itemBuilder: (context, index) {
-              return Task(
-                taskName: tasks[index].taskName,
-                date: tasks[index].date,
-                col: tasks[index].col,
-                description: tasks[index].description,
-              );
-            },
-          ),
-          const SizedBox(height: 30),
-          Center(
-            child: SizedBox(
-              width: 250,
-              height: 40,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/addTask');
-                },
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                      const Color(0xFFEE6F57),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(40, 5, 0, 0),
+              child: Text(
+                "Tasks List",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            const SizedBox(height: 5),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: tasks.length,
+              itemBuilder: (context, index) {
+                return Task(
+                  taskName: tasks[index].taskName,
+                  date: tasks[index].date,
+                  col: tasks[index].col,
+                  description: tasks[index].description,
+                );
+              },
+            ),
+            const SizedBox(height: 30),
+            Center(
+              child: SizedBox(
+                width: 250,
+                height: 40,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/addTask');
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color(0xFFEE6F57),
+                      ),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ))),
+                  child: const Text(
+                    "Create Task",
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w700,
                     ),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ))),
-                child: const Text(
-                  "Create Task",
-                  style: TextStyle(
-                    fontSize: 19,
-                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 30),
+          ],
+        ),
       ),
     );
   }
@@ -149,8 +153,8 @@ class Task extends StatelessWidget {
           },
         );
       },
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(30, 10, 30, 0),
         child: Container(
           padding: const EdgeInsets.fromLTRB(20, 10, 10, 5),
           decoration: BoxDecoration(
