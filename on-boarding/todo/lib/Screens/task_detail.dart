@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 import '../app_bar.dart';
 
 class TaskDetail extends StatelessWidget {
-  const TaskDetail({super.key});
+  const TaskDetail({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final Map<String, dynamic>? args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
-    final String taskName = args['taskName'];
-    final String duedate = args['duedate'];
-    final String description = args['description'];
+    String? taskName, duedate, description;
+
+    if (args != null) {
+      taskName = args['taskName'];
+      duedate = args['duedate'];
+      description = args['description'];
+    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -32,14 +36,17 @@ class TaskDetail extends StatelessWidget {
           CustomField(
             minLine: 1,
             fieldTitle: "Title",
-            fieldText: taskName,
+            fieldText: taskName ?? 'TaskName',
           ),
           CustomField(
-              minLine: 4, fieldTitle: "Description", fieldText: description),
+            minLine: 4,
+            fieldTitle: "Description",
+            fieldText: description ?? 'Task Description',
+          ),
           CustomField(
             minLine: 1,
             fieldTitle: "Deadline",
-            fieldText: duedate,
+            fieldText: duedate ?? 'April 23, 2019',
           ),
         ],
       ),
@@ -51,11 +58,12 @@ class CustomField extends StatelessWidget {
   final int minLine;
   final String fieldTitle, fieldText;
 
-  const CustomField(
-      {super.key,
-      required this.minLine,
-      required this.fieldText,
-      required this.fieldTitle});
+  const CustomField({
+    Key? key,
+    required this.minLine,
+    required this.fieldText,
+    required this.fieldTitle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
