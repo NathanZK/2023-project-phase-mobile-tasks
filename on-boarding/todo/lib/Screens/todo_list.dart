@@ -1,26 +1,32 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import '../app_bar.dart';
 
 // ignore: must_be_immutable
-class TodoList extends StatelessWidget {
+class TodoList extends StatefulWidget {
   TodoList({super.key});
 
-  List<Task> tasks = [
-    Task(
+  @override
+  State<TodoList> createState() => _TodoListState();
+}
+
+class _TodoListState extends State<TodoList> {
+  List<Tasks> tasks = [
+    Tasks(
       taskName: "UI/UX App Design",
       date: "April 29, 2023",
       col: 0,
       description:
           "First I have to animate the logo and prototyping my design. It’s very important.",
     ),
-    Task(
+    Tasks(
       taskName: "View Candidates",
       date: "April 29, 2023",
       col: 3,
       description: "This is task description for View Candidates",
     ),
-    Task(
+    Tasks(
       taskName: "Footbal Cup Dribbling",
       date: "April 29, 2023",
       col: 2,
@@ -30,19 +36,6 @@ class TodoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic>? args =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-
-    if (args != null) {
-      Task newtask = Task(
-        taskName: args['taskName'],
-        date: args['date'],
-        col: args['col'],
-        description: args['description'],
-      );
-      tasks.add(newtask);
-    }
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const CommonAppBar(
@@ -75,11 +68,36 @@ class TodoList extends StatelessWidget {
               shrinkWrap: true,
               itemCount: tasks.length,
               itemBuilder: (context, index) {
-                return Task(
-                  taskName: tasks[index].taskName,
-                  date: tasks[index].date,
-                  col: tasks[index].col,
-                  description: tasks[index].description,
+                return TaskCard(
+                  onEdit: () async {
+                    var updatedTask = await Navigator.pushNamed(
+                      context,
+                      '/taskDetail',
+                      arguments: {
+                        'duedate': tasks[index].date,
+                        'description': tasks[index].description,
+                        'taskName': tasks[index].taskName,
+                      },
+                    );
+                    if (updatedTask != null) {
+                      final _updatedTask = updatedTask as Map;
+                      setState(
+                        () {
+                          if (_updatedTask['taskName'] != null) {
+                            tasks[index].taskName = _updatedTask['taskName'];
+                          }
+                          if (_updatedTask['duedate'] != null) {
+                            tasks[index].date = _updatedTask['duedate'];
+                          }
+                          if (_updatedTask['description'] != null) {
+                            tasks[index].description =
+                                _updatedTask['description'];
+                          }
+                        },
+                      );
+                    }
+                  },
+                  task: tasks[index],
                 );
               },
             ),
@@ -89,8 +107,14 @@ class TodoList extends StatelessWidget {
                 width: 250,
                 height: 40,
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/addTask');
+                  onPressed: () async {
+                    final result =
+                        await Navigator.pushNamed(context, '/addTask');
+                    if (result != null) {
+                      setState(() => tasks.add(
+                            result as Tasks,
+                          ));
+                    }
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
@@ -119,17 +143,16 @@ class TodoList extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class Task extends StatelessWidget {
-  final String taskName, date, description;
-  final int col;
+class TaskCard extends StatelessWidget {
+  final Tasks task;
 
-  Task({
+  TaskCard({
     super.key,
-    required this.taskName,
-    required this.date,
-    required this.description,
-    required this.col,
+    required this.task,
+    required this.onEdit,
   });
+
+  final VoidCallback onEdit;
 
   List<Color> cols = [
     Colors.red,
@@ -142,17 +165,7 @@ class Task extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          '/taskDetail',
-          arguments: {
-            'duedate': date,
-            'description': description,
-            'taskName': taskName,
-          },
-        );
-      },
+      onTap: onEdit,
       child: Container(
         margin: const EdgeInsets.fromLTRB(30, 10, 30, 0),
         child: Container(
@@ -165,7 +178,7 @@ class Task extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                taskName[0].toUpperCase(),
+                task.taskName[0].toUpperCase(),
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 25,
@@ -176,7 +189,7 @@ class Task extends StatelessWidget {
                 height: 50,
                 width: 100,
                 child: Text(
-                  taskName,
+                  task.taskName,
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w800,
@@ -188,7 +201,7 @@ class Task extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    date,
+                    task.date,
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 12,
@@ -206,7 +219,7 @@ class Task extends StatelessWidget {
                   height: 45,
                   width: 3.5,
                   child: DecoratedBox(
-                    decoration: BoxDecoration(color: cols[col]),
+                    decoration: BoxDecoration(color: cols[task.col]),
                   ),
                 ),
               ),
@@ -216,4 +229,19 @@ class Task extends StatelessWidget {
       ),
     );
   }
+}
+
+// ignore: must_be_immutable
+class Tasks extends Equatable {
+  String taskName, date, description;
+  int col;
+
+  Tasks(
+      {required this.taskName,
+      required this.date,
+      required this.description,
+      required this.col});
+
+  @override
+  List<Object?> get props => [taskName, date, description, col];
 }

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-
-  const CommonAppBar({Key? key, required this.title}) : super(key: key);
+  final VoidCallback? onPress;
+  const CommonAppBar({Key? key, required this.title, this.onPress})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +27,10 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       automaticallyImplyLeading: false,
       leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
+        onPressed: onPress ??
+            () {
+              Navigator.pop(context);
+            },
         icon: const Icon(
           Icons.arrow_back_ios,
           color: Color(0xFFEE6F57),

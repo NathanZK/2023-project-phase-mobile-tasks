@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../app_bar.dart';
 
@@ -10,18 +11,27 @@ class TaskDetail extends StatelessWidget {
     final Map<String, dynamic>? args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
-    String? taskName, duedate, description;
+    String taskName = args?['taskName'] ?? 'Default Task Name';
+    String duedate = args?['duedate'] ?? 'Default Due Date';
+    String description = args?['description'] ?? 'Default Description';
 
-    if (args != null) {
-      taskName = args['taskName'];
-      duedate = args['duedate'];
-      description = args['description'];
-    }
+    final TextEditingController _taskName =
+        TextEditingController(text: taskName);
+    final TextEditingController _dueDate = TextEditingController(text: duedate);
+    final TextEditingController _description =
+        TextEditingController(text: description);
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const CommonAppBar(
+      appBar: CommonAppBar(
         title: 'Task Detail',
+        onPress: () {
+          Navigator.pop(context, {
+            "taskName": _taskName.text,
+            "duedate": _dueDate.text,
+            "description": _description.text,
+          });
+        },
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,17 +46,17 @@ class TaskDetail extends StatelessWidget {
           CustomField(
             minLine: 1,
             fieldTitle: "Title",
-            fieldText: taskName ?? 'TaskName',
+            controller: _taskName,
           ),
           CustomField(
             minLine: 4,
             fieldTitle: "Description",
-            fieldText: description ?? 'Task Description',
+            controller: _description,
           ),
           CustomField(
             minLine: 1,
             fieldTitle: "Deadline",
-            fieldText: duedate ?? 'April 23, 2019',
+            controller: _dueDate,
           ),
         ],
       ),
@@ -54,17 +64,23 @@ class TaskDetail extends StatelessWidget {
   }
 }
 
-class CustomField extends StatelessWidget {
+class CustomField extends StatefulWidget {
   final int minLine;
-  final String fieldTitle, fieldText;
+  final String fieldTitle;
+  final TextEditingController controller;
 
   const CustomField({
     Key? key,
     required this.minLine,
-    required this.fieldText,
     required this.fieldTitle,
+    required this.controller,
   }) : super(key: key);
 
+  @override
+  State<CustomField> createState() => _CustomFieldState();
+}
+
+class _CustomFieldState extends State<CustomField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -73,7 +89,7 @@ class CustomField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            fieldTitle,
+            widget.fieldTitle,
             style: const TextStyle(
               color: Colors.black,
               fontSize: 15,
@@ -94,17 +110,33 @@ class CustomField extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              hintText: fieldText,
               hintStyle: const TextStyle(
                 color: Colors.black,
               ),
             ),
+            onTap: () async {
+              if (widget.fieldTitle == "Deadline") {
+                DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100));
+
+                if (pickedDate != null) {
+                  String formattedDate = DateFormat.yMMMd().format(pickedDate);
+                  setState(() {
+                    widget.controller.text = formattedDate;
+                  });
+                }
+              }
+            },
             style: const TextStyle(
               color: Colors.black,
               fontSize: 15,
               fontWeight: FontWeight.w400,
             ),
-            minLines: minLine,
+            controller: widget.controller,
+            minLines: widget.minLine,
             maxLines: 6,
           )
         ],

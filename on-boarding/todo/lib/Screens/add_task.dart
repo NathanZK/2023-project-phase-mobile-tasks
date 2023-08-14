@@ -1,17 +1,28 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:todo/Screens/todo_list.dart';
 
 import '../app_bar.dart';
 
 // ignore: must_be_immutable
-class AddTask extends StatelessWidget {
+class AddTask extends StatefulWidget {
   AddTask({super.key});
+
+  @override
+  State<AddTask> createState() => _AddTaskState();
+}
+
+class _AddTaskState extends State<AddTask> {
   final TextEditingController _taskName = TextEditingController();
+
   final TextEditingController _dueDate = TextEditingController();
+
   final TextEditingController _description = TextEditingController();
 
   Random random = Random();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +61,7 @@ class AddTask extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(15.0),
                       ),
-                      hintText: "UI/UX App Design",
+                      hintText: "Task Name",
                     ),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
@@ -89,7 +100,7 @@ class AddTask extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(15.0),
                       ),
-                      hintText: "April 29,2023 12:30AM",
+                      labelText: "Enter Date",
                       suffixIcon: IconButton(
                         icon: const Icon(
                           Icons.calendar_month,
@@ -98,6 +109,22 @@ class AddTask extends StatelessWidget {
                         onPressed: () {},
                       ),
                     ),
+                    readOnly: true,
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100));
+
+                      if (pickedDate != null) {
+                        String formattedDate =
+                            DateFormat.yMMMd().format(pickedDate);
+                        setState(() {
+                          _dueDate.text = formattedDate;
+                        });
+                      }
+                    },
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -137,8 +164,7 @@ class AddTask extends StatelessWidget {
                           ),
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        hintText:
-                            "First I have to animate the logo and later prototyping my design. It's very important.",
+                        hintText: "Task Description",
                       ),
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
@@ -158,13 +184,13 @@ class AddTask extends StatelessWidget {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    print(_taskName.text + _dueDate.text + _description.text);
-                    Navigator.pushNamed(context, '/todoList', arguments: {
-                      "date": _dueDate.text,
-                      "description": _description.text,
-                      "taskName": _taskName.text,
-                      "col": random.nextInt(5),
-                    });
+                    Navigator.pop(
+                        context,
+                        Tasks(
+                            taskName: _taskName.text,
+                            date: _dueDate.text,
+                            description: _description.text,
+                            col: random.nextInt(5)));
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
