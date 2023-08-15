@@ -50,6 +50,7 @@ class _AddTaskState extends State<AddTask> {
                   ),
                   const SizedBox(height: 5),
                   TextField(
+                    key: const Key("addTask"),
                     controller: _taskName,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
@@ -89,6 +90,7 @@ class _AddTaskState extends State<AddTask> {
                   ),
                   const SizedBox(height: 5),
                   TextField(
+                    key: const Key("addDate"),
                     controller: _dueDate,
                     decoration: InputDecoration(
                       fillColor: Colors.white,
@@ -153,6 +155,7 @@ class _AddTaskState extends State<AddTask> {
                   SizedBox(
                     height: 100,
                     child: TextField(
+                      key: const Key("addDescription"),
                       controller: _description,
                       decoration: InputDecoration(
                         fillColor: Colors.white,
@@ -183,6 +186,7 @@ class _AddTaskState extends State<AddTask> {
                 width: 170,
                 height: 50,
                 child: ElevatedButton(
+                  key: const Key("addTaskButton"),
                   onPressed: () {
                     Navigator.pop(
                         context,

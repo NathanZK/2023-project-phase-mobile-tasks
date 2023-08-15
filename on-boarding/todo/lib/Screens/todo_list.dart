@@ -5,7 +5,7 @@ import '../app_bar.dart';
 
 // ignore: must_be_immutable
 class TodoList extends StatefulWidget {
-  TodoList({super.key});
+  const TodoList({super.key});
 
   @override
   State<TodoList> createState() => _TodoListState();
@@ -166,62 +166,76 @@ class TaskCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onEdit,
-      child: Container(
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
         margin: const EdgeInsets.fromLTRB(30, 10, 30, 0),
         child: Container(
-          padding: const EdgeInsets.fromLTRB(20, 10, 10, 5),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25.0),
-              border: Border.all(
-                  color: const Color.fromARGB(255, 224, 228, 224), width: 1.5)),
+          padding: const EdgeInsets.fromLTRB(20, 10, 17, 5),
+          alignment: Alignment.centerLeft,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                task.taskName[0].toUpperCase(),
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 25,
-                ),
-              ),
-              const SizedBox(width: 20),
-              SizedBox(
-                height: 50,
-                width: 100,
-                child: Text(
-                  task.taskName,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 90),
-              Column(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    task.date,
+                    task.taskName[0].toUpperCase(),
                     style: const TextStyle(
                       color: Colors.black,
-                      fontSize: 12,
+                      fontSize: 25,
                     ),
                   ),
                   const SizedBox(
-                    height: 25,
+                    width: 15,
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: 100,
+                    child: Text(
+                      task.taskName,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 14.5,
+                      ),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(width: 5),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(100.0),
-                child: SizedBox(
-                  height: 45,
-                  width: 3.5,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(color: cols[task.col]),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        task.date,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                    ],
                   ),
-                ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(100.0),
+                    child: SizedBox(
+                      height: 45,
+                      width: 3.5,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(color: cols[task.col]),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
