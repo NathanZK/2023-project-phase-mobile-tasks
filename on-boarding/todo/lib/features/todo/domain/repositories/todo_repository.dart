@@ -5,7 +5,7 @@ import '../entities/task.dart';
 
 abstract class TodoRepository {
   Future<Either<Failure, List<Tasks>>> viewAllTasks();
-  Future<Either<Failure, void>> createTask(Tasks task);
-  Future<Either<Failure, void>> viewTask(Tasks task);
+  Future<Either<Failure, Tasks>> createTask(Tasks task);
+  Future<Either<Failure, Tasks>> viewTask(Tasks task);
 
 }
