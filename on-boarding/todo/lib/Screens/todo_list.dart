@@ -1,7 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../app_bar.dart';
+import '../features/todo/domain/entities/task.dart';
+import '../features/todo/presentation/widgets/task_card.dart';
 
 // ignore: must_be_immutable
 class TodoList extends StatefulWidget {
@@ -16,20 +19,20 @@ class _TodoListState extends State<TodoList> {
     Tasks(
       taskName: "UI/UX App Design",
       date: "April 29, 2023",
-      col: 0,
+      col: 1,
       description:
           "First I have to animate the logo and prototyping my design. It’s very important.",
     ),
     Tasks(
       taskName: "View Candidates",
       date: "April 29, 2023",
-      col: 3,
+      col: 1,
       description: "This is task description for View Candidates",
     ),
     Tasks(
       taskName: "Footbal Cup Dribbling",
       date: "April 29, 2023",
-      col: 2,
+      col: 1,
       description: "This is task description for Footbal Cup Dribbling",
     ),
   ];
@@ -143,119 +146,4 @@ class _TodoListState extends State<TodoList> {
 }
 
 // ignore: must_be_immutable
-class TaskCard extends StatelessWidget {
-  final Tasks task;
 
-  TaskCard({
-    super.key,
-    required this.task,
-    required this.onEdit,
-  });
-
-  final VoidCallback onEdit;
-
-  List<Color> cols = [
-    Colors.red,
-    Colors.blue,
-    Colors.pink,
-    Colors.green,
-    Colors.yellow
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onEdit,
-      child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        margin: const EdgeInsets.fromLTRB(30, 10, 30, 0),
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(20, 10, 17, 5),
-          alignment: Alignment.centerLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    task.taskName[0].toUpperCase(),
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  SizedBox(
-                    height: 50,
-                    width: 100,
-                    child: Text(
-                      task.taskName,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 14.5,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        task.date,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(100.0),
-                    child: SizedBox(
-                      height: 45,
-                      width: 3.5,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(color: cols[task.col]),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ignore: must_be_immutable
-class Tasks extends Equatable {
-  String taskName, date, description;
-  int col;
-
-  Tasks(
-      {required this.taskName,
-      required this.date,
-      required this.description,
-      required this.col});
-
-  @override
-  List<Object?> get props => [taskName, date, description, col];
-}

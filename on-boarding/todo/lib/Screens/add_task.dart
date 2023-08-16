@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:todo/Screens/todo_list.dart';
 
 import '../app_bar.dart';
+import '../features/todo/domain/entities/task.dart';
 
 // ignore: must_be_immutable
 class AddTask extends StatefulWidget {
@@ -20,8 +21,6 @@ class _AddTaskState extends State<AddTask> {
   final TextEditingController _dueDate = TextEditingController();
 
   final TextEditingController _description = TextEditingController();
-
-  Random random = Random();
 
   @override
   Widget build(BuildContext context) {
@@ -189,12 +188,13 @@ class _AddTaskState extends State<AddTask> {
                   key: const Key("addTaskButton"),
                   onPressed: () {
                     Navigator.pop(
-                        context,
-                        Tasks(
-                            taskName: _taskName.text,
-                            date: _dueDate.text,
-                            description: _description.text,
-                            col: random.nextInt(5)));
+                      context,
+                      Tasks(
+                          taskName: _taskName.text,
+                          date: _dueDate.text,
+                          description: _description.text,
+                          col: 1),
+                    );
                   },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
