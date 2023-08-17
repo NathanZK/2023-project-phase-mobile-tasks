@@ -32,6 +32,7 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+  internet_connection_checker: ^1.0.0+1
   intl: ^0.17.0
   mockito: ^5.4.2
   # Service locator
