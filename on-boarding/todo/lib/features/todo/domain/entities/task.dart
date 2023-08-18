@@ -5,6 +5,8 @@ class Tasks extends Equatable {
   String taskName, date, description;
   int col;
 
+  var id;
+
   Tasks(
       {required this.taskName,
       required this.date,
